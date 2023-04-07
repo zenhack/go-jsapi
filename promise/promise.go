@@ -70,8 +70,8 @@ func (p Promise[T]) Wait() (T, error) {
 	return p.Thunk().Force().Get()
 }
 
-func (p Promise[T]) Thunk() *thunk.T[orerr.T[T]] {
-	result, fulfill := thunk.Promise[orerr.T[T]]()
+func (p Promise[T]) Thunk() *thunk.Thunk[orerr.OrErr[T]] {
+	result, fulfill := thunk.Promise[orerr.OrErr[T]]()
 	Then(
 		p,
 		func(v T) Promise[jsapi.Value] {
