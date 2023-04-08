@@ -12,7 +12,7 @@ type Promise[T ~jsapi.ValueKind] struct {
 	Value js.Value
 }
 
-func NewPromise[T ~jsapi.ValueKind](use func(resolve func(T), reject func(error))) Promise[T] {
+func New[T ~jsapi.ValueKind](use func(resolve func(T), reject func(error))) Promise[T] {
 	var useJs js.Func
 	useJs = js.FuncOf(func(this js.Value, args []js.Value) any {
 		defer useJs.Release()
