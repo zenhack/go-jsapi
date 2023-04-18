@@ -31,9 +31,9 @@ func New[T ~jsapi.ValueKind](use func(resolve func(T), reject func(error))) Prom
 	}
 }
 
-func Ready[T ~jsapi.ValueKind](v T) Promise[T] {
+func Resolve[T ~jsapi.ValueKind](v T) Promise[T] {
 	return Promise[T]{
-		Value: js.Global().Get("Promise").Call("ready", jsapi.Value(v).Value),
+		Value: js.Global().Get("Promise").Call("resolve", jsapi.Value(v).Value),
 	}
 }
 
@@ -76,11 +76,11 @@ func (p Promise[T]) Thunk() *thunk.Thunk[orerr.OrErr[T]] {
 		p,
 		func(v T) Promise[jsapi.Value] {
 			fulfill(orerr.New(v, nil))
-			return Ready(jsapi.Value{})
+			return Resolve(jsapi.Value{})
 		},
 		func(err error) Promise[jsapi.Value] {
 			fulfill(orerr.New(T{}, err))
-			return Ready(jsapi.Value{})
+			return Resolve(jsapi.Value{})
 		},
 	)
 	return result
