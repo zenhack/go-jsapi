@@ -18,8 +18,8 @@ func (r ReadableStreamDefaultReader) Next() ([]byte, error) {
 	if v.Value.Get("done").Bool() {
 		return nil, io.EOF
 	}
-	chunk := v.Value.Get("theChunk")
-	length := chunk.Call("length").Int()
+	chunk := v.Value.Get("value")
+	length := chunk.Length()
 	result := make([]byte, length)
 	copied := js.CopyBytesToGo(result, chunk)
 	if copied != length {
